@@ -1,0 +1,27 @@
+class Solution {
+public:
+    int maxProfit(vector<int>& prices) {
+        
+        int len = prices.size();
+        if (len < 2) return 0;      // len = 1  or 0
+
+        //int profit[len];
+        vector<int> profit(len);            // Selling operation
+        vector<int> buy(len);               // Buying operation
+
+
+        buy[0]  = 0 -prices[0];
+        buy[1]  = 0 -min(prices[0], prices[1]); 
+        // Buying thing will be in negative
+        profit[1] = max(0, buy[0] + prices[1]);
+
+        for (int i = 2; i < len; i++)
+        {
+            buy[i]  = max(buy[i - 1], profit[i - 2] - prices[i]);
+            profit[i] = max(profit[i - 1], buy[i - 1] + prices[i]);
+            // Profit =S.P (prices[i])   -CP (buy[i-1])
+        }
+
+        return profit[len - 1]; 
+    }
+};
